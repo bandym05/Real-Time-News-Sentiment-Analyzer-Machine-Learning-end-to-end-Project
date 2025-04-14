@@ -1,19 +1,25 @@
 # backend/fetch_news.py
 import os
 import requests
+from dotenv import load_dotenv
 
-NEWS_API_KEY = os.getenv("NEWS_API_KEY", "YOUR_NEWS_API_KEY")  # Replace with your actual API key or set as env variable
+# Load environment variables from .env
+load_dotenv()
+
+NEWS_API_KEY = os.getenv("NEWS_API_KEY")
 NEWS_API_URL = "https://newsapi.org/v2/top-headlines"
 
 def get_headlines(country: str = "us", category: str = None, q: str = None):
     """
-    Fetches news headlines based on optional filters.
-    Default fetches top headlines for the US.
+    Fetches news headlines from NewsAPI based on optional filters.
     """
+    if not NEWS_API_KEY:
+        raise EnvironmentError("Missing NEWS_API_KEY in environment variables")
+
     params = {
         "apiKey": NEWS_API_KEY,
-        "country": country,  # change country code as needed
-        "pageSize": 20,      # number of articles
+        "country": country,
+        "pageSize": 20,
     }
     if category:
         params["category"] = category
@@ -25,7 +31,6 @@ def get_headlines(country: str = "us", category: str = None, q: str = None):
         raise Exception(f"News API error: {response.status_code} {response.text}")
     
     data = response.json()
-    # Return only necessary fields
     headlines = []
     for article in data.get("articles", []):
         headlines.append({
