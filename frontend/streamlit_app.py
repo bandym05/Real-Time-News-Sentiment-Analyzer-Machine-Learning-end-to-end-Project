@@ -4,7 +4,7 @@ import requests
 import pandas as pd
 from datetime import datetime
 
-# --- CONFIGURATION ---
+
 API_URL = "http://localhost:8000/headlines"
 
 # --- SIDEBAR FILTERS ---
@@ -61,7 +61,7 @@ if articles:
         st.markdown(f"**Description:** {df.at[article_index, 'description']}")
         st.markdown(f"[Read full article]({df.at[article_index, 'url']})")
 
-    # --- LAST UPDATED FOOTER ---
+    
     if last_updated:
         st.markdown(f"<hr/><p style='text-align: right; color: gray;'>Last updated: <b>{last_updated}</b></p>", unsafe_allow_html=True)
 else:
